@@ -55,7 +55,7 @@
                                 <li class="has-children">
                                     <a href="#">Dropdown</a>
                                     <ul class="dropdown">
-                                        <li><a href="#">Supplements</a></li>
+                                        <li><a asp-area="Admin" asp-controller="Categories" asp-action="Index">Category</a></li>
                                         <li class="has-children">
                                             <a href="#">Vitamins</a>
                                             <ul class="dropdown">
@@ -90,9 +90,11 @@
             </div>
         </div>
 
-        
 
             @RenderBody()
+
+
+           
       
        
 

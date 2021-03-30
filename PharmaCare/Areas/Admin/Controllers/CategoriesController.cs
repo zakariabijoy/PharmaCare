@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using PharmaCare.Data;
 using PharmaCare.Models;
 
-namespace PharmaCare.Controllers
+namespace PharmaCare.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,13 +20,13 @@ namespace PharmaCare.Controllers
             _context = context;
         }
 
-        // GET: Categories
+        // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Categories/Details/5
+        // GET: Admin/Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +44,13 @@ namespace PharmaCare.Controllers
             return View(category);
         }
 
-        // GET: Categories/Create
+        // GET: Admin/Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: Admin/Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +66,7 @@ namespace PharmaCare.Controllers
             return View(category);
         }
 
-        // GET: Categories/Edit/5
+        // GET: Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +82,7 @@ namespace PharmaCare.Controllers
             return View(category);
         }
 
-        // POST: Categories/Edit/5
+        // POST: Admin/Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +117,7 @@ namespace PharmaCare.Controllers
             return View(category);
         }
 
-        // GET: Categories/Delete/5
+        // GET: Admin/Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +135,7 @@ namespace PharmaCare.Controllers
             return View(category);
         }
 
-        // POST: Categories/Delete/5
+        // POST: Admin/Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
