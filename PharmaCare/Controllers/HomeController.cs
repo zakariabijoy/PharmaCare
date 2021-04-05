@@ -29,6 +29,18 @@ namespace PharmaCare.Controllers
         {
             ViewBag.newProducts = _context.Products.ToList().OrderByDescending(p => p.CreatedDate).Take(4);
             ViewBag.popularProducts = _context.Products.ToList().OrderByDescending(p => p.Star).Take(6);
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var count = _context.ShoppingCarts
+                    .Where(s => s.ApplicationUserId == claim.Value)
+                    .ToList().Count();
+
+                HttpContext.Session.SetInt32("Session_ShoppingCart", count);
+            }
+
             return View();
         }
 

@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +21,7 @@
     <link rel="stylesheet" href="~/content/css/aos.css">
 
     <link rel="stylesheet" href="~/content/css/style.css">
-    
+
 
 </head>
 
@@ -77,27 +78,41 @@
                             </ul>
                         </nav>
                     </div>
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("Session_ShoppingCart") != null)
+                    {
                     <div class="icons">
-                        <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
+
                         <a href="#" class="icons-btn d-inline-block bag">
                             <span class="icon-shopping-bag"></span>
-                            <span class="number">2</span>
+                            @{
+                                       var count = HttpContextAccessor.HttpContext.Session.GetInt32("Session_ShoppingCart");
+                            }
+                            <span class="number">@count</span>
                         </a>
-                        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
-                            <span class="icon-menu"></span>
-                        </a>
+
                     </div>
+                     }else
+                        {
+                    <div class="icons">
+
+                        <a href="#" class="icons-btn d-inline-block bag">
+                            <span class="icon-shopping-bag"></span>
+                            <span class="number">0</span>
+                        </a>
+
+                    </div>
+                    }
                 </div>
             </div>
         </div>
 
 
-            @RenderBody()
+        @RenderBody()
 
 
-           
-      
-       
+
+
+
 
         <footer class="site-footer">
             <div class="container">
