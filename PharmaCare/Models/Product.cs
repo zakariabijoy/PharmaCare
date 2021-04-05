@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PharmaCare.Models
 {
-    public class Product
-    {
+    public class Product 
+    { 
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
@@ -25,6 +25,9 @@ namespace PharmaCare.Models
         [Range(1, 10000)]
         public double Price100 { get; set; }
         public string ImageUrl { get; set; }
+        public int Star { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
         // navigation property or relationship making properties
 

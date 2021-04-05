@@ -10,7 +10,7 @@
                         <h2 class="sub-title">effective medicine, new medicine everyday</h2>
                         <h1>welcome to pharmacare</h1>
                         <p>
-                            <a href="#" class="btn btn-primary px-5 py-3">shop now</a>
+                            <a href="#popularProducts" class="btn btn-primary px-5 py-3">shop now</a>
                         </p>
                     </div>
                 </div>
@@ -64,45 +64,62 @@
 
         <div class="row">
             <div class="title-section text-center col-12">
-                <h2 class="text-uppercase">Popular Products</h2>
+                <h2 class="text-uppercase" id="popularProducts">Popular Products</h2>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                <span class="tag">Sale</span>
-                <a href="#"> <img src="~/content/images/product_01.png" alt="Image"></a>
-                <h3 class="text-dark"><a href="#">Bioderma</a></h3>
-                <p class="price"><del>95.00</del> &mdash; $55.00</p>
-            </div>
-            <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                <a href="#"> <img src="~/content/images/product_02.png" alt="Image"></a>
-                <h3 class="text-dark"><a href="#">Chanca Piedra</a></h3>
-                <p class="price">$70.00</p>
-            </div>
-            <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                <a href="#"> <img src="~/content/images/product_03.png" alt="Image"></a>
-                <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
-                <p class="price">$120.00</p>
-            </div>
+            @if (ViewBag.popularProducts != null)
+            {
 
-            <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                foreach (Product item in ViewBag.popularProducts)
+                {
+                    <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                        <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Id"> <img src="@item.ImageUrl"  height="370" width="290px" alt="Image"></a>
+                        <h3 class="text-dark"><a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Id">@item.Title</a></h3>
+                        <p class="price"><del>$@item.ListPrice</del> &mdash; $@item.Price</p>
+                    </div>
+                }
 
-                <a href="#"> <img src="~/content/images/product_04.png" alt="Image"></a>
-                <h3 class="text-dark"><a href="#">Cetyl Pure</a></h3>
-                <p class="price"><del>45.00</del> &mdash; $20.00</p>
-            </div>
-            <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                <a href="#"> <img src="~/content/images/product_05.png" alt="Image"></a>
-                <h3 class="text-dark"><a href="#">CLA Core</a></h3>
-                <p class="price">$38.00</p>
-            </div>
-            <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                <span class="tag">Sale</span>
-                <a href="#"> <img src="~/content/images/product_06.png" alt="Image"></a>
-                <h3 class="text-dark"><a href="#">Poo Pourri</a></h3>
-                <p class="price"><del>$89</del> &mdash; $38.00</p>
-            </div>
+
+            }
+            else
+            {
+                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                    <span class="tag">Sale</span>
+                    <a href="#"> <img src="~/content/images/product_01.png" alt="Image"></a>
+                    <h3 class="text-dark"><a href="#">Bioderma</a></h3>
+                    <p class="price"><del>95.00</del> &mdash; $55.00</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                    <a href="#"> <img src="~/content/images/product_02.png" alt="Image"></a>
+                    <h3 class="text-dark"><a href="#">Chanca Piedra</a></h3>
+                    <p class="price">$70.00</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                    <a href="#"> <img src="~/content/images/product_03.png" alt="Image"></a>
+                    <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
+                    <p class="price">$120.00</p>
+                </div>
+
+                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+
+                    <a href="#"> <img src="~/content/images/product_04.png" alt="Image"></a>
+                    <h3 class="text-dark"><a href="#">Cetyl Pure</a></h3>
+                    <p class="price"><del>45.00</del> &mdash; $20.00</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                    <a href="#"> <img src="~/content/images/product_05.png" alt="Image"></a>
+                    <h3 class="text-dark"><a href="#">CLA Core</a></h3>
+                    <p class="price">$38.00</p>
+                </div>
+                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                    <span class="tag">Sale</span>
+                    <a href="#"> <img src="~/content/images/product_06.png" alt="Image"></a>
+                    <h3 class="text-dark"><a href="#">Poo Pourri</a></h3>
+                    <p class="price"><del>$89</del> &mdash; $38.00</p>
+                </div>
+            }
         </div>
         <div class="row mt-5">
             <div class="col-12 text-center">
@@ -124,30 +141,46 @@
             <div class="col-md-12 block-3 products-wrap">
                 <div class="nonloop-block-3 owl-carousel">
 
-                    <div class="text-center item mb-4">
-                        <a href="#"> <img src="~/content/images/product_03.png" alt="Image"></a>
-                        <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
-                        <p class="price">$120.00</p>
-                    </div>
+                    @if (ViewBag.newProducts != null)
+                    {
+                        
+                            foreach (Product item in ViewBag.newProducts)
+                            {
+                                <div class="text-center item mb-4">
+                                    <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Id"> <img height="370" src="@item.ImageUrl" alt="Image"></a>
+                                    <h3 class="text-dark"><a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Id">@item.Title</a></h3>
+                                    <p class="price">$@item.Price</p>
+                                </div>
+                            }
 
-                    <div class="text-center item mb-4">
-                        <a href="#"> <img src="~/content/images/product_01.png" alt="Image"></a>
-                        <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
-                        <p class="price">$120.00</p>
-                    </div>
 
-                    <div class="text-center item mb-4">
-                        <a href="#"> <img src="~/content/images/product_02.png" alt="Image"></a>
-                        <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
-                        <p class="price">$120.00</p>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="text-center item mb-4">
+                            <a href="#"> <img src="~/content/images/product_03.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
 
-                    <div class="text-center item mb-4">
-                        <a href="#"> <img src="~/content/images/product_04.png" alt="Image"></a>
-                        <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
-                        <p class="price">$120.00</p>
-                    </div>
+                        <div class="text-center item mb-4">
+                            <a href="#"> <img src="~/content/images/product_01.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
 
+                        <div class="text-center item mb-4">
+                            <a href="#"> <img src="~/content/images/product_02.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+
+                        <div class="text-center item mb-4">
+                            <a href="#"> <img src="~/content/images/product_04.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="#">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

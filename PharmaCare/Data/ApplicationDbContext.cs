@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using PharmaCare.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PharmaCare.Data
 {
@@ -15,5 +18,7 @@ namespace PharmaCare.Data
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+
+
     }
 }
