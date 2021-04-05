@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PharmaCare.Data;
 using PharmaCare.Models;
@@ -46,6 +47,12 @@ namespace PharmaCare.Controllers
 
             return View(product);
 
+        }
+
+        public async Task<IActionResult> ShowAllProducts()
+        {
+            var products = await _context.Products.ToListAsync();
+            return View(products);
         }
 
         public IActionResult Privacy()
