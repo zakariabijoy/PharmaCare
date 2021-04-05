@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -86,6 +87,10 @@ namespace PharmaCare.Controllers
                 }
 
                 _context.SaveChanges();
+
+                var count = _context.ShoppingCarts.Where(s => s.ApplicationUserId == shoppingCart.ApplicationUserId).ToList().Count();
+                // HttpContext.Session.SetObject(SD.Session_ShoppingCart, shoppingCartFromDb);     // we can store an object into session by using SetObject (session extension method)
+                HttpContext.Session.SetInt32("Session_ShoppingCart", count);
 
                 return RedirectToAction("Index");
 
