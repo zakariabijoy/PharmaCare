@@ -82,7 +82,7 @@
                     {
                     <div class="icons">
 
-                        <a href="#" class="icons-btn d-inline-block bag">
+                        <a asp-controller="Cart" asp-action="Index" class="icons-btn d-inline-block bag">
                             <span class="icon-shopping-bag"></span>
                             @{
                                        var count = HttpContextAccessor.HttpContext.Session.GetInt32("Session_ShoppingCart");
