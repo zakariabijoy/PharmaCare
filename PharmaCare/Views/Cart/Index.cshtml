@@ -38,18 +38,18 @@
                                                 
 
                                                 <div class="input-group-prepend">
-                                                    <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+                                                    <a class="btn btn-outline-primary " asp-action="Minus" asp-route-cartId ="@shoppingCart.Id" >&minus;</a>
                                                 </div>
                                            
 
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+                                                    <a class="btn btn-outline-primary " asp-action="Plus" asp-route-cartId ="@shoppingCart.Id" >&plus;</a>
                                                 </div>
                                             </div>
 
                                         </td>
                                         <td>@(shoppingCart.Price * shoppingCart.Count)</td>
-                                        <td><a href="#" class="btn btn-primary height-auto btn-sm">X</a></td>
+                                        <td><a asp-action="Remove" asp-route-cartId ="@shoppingCart.Id" class="btn btn-primary height-auto btn-sm">X</a></td>
                                     </tr>
                                 }
                                 </tbody>

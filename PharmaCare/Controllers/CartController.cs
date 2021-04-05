@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PharmaCare.Data;
@@ -54,6 +55,61 @@ namespace PharmaCare.Controllers
             }
 
             return View(ShoppingCartVm);
+        }
+
+        public IActionResult Plus(int cartId)
+        {
+            var cart = _context.ShoppingCarts.Include(s => s.Product).FirstOrDefault(c => c.Id == cartId);
+            cart.Count += 1;
+            cart.Price = SD.GetPriceBasedOnQuatity(cart.Count, cart.Product.Price, cart.Product.Price50, cart.Product.Price100);
+
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public IActionResult Minus(int cartId)
+        {
+            var cart = _context.ShoppingCarts.Include(s => s.Product).FirstOrDefault(c => c.Id == cartId);
+
+
+            if (cart.Count == 1)
+            {
+                var cnt = _context.ShoppingCarts.Where(sC => sC.ApplicationUserId == cart.ApplicationUserId).ToList().Count();
+                _context.ShoppingCarts.Remove(cart);
+                _context.SaveChanges();
+
+                HttpContext.Session.SetInt32("Session_ShoppingCart", cnt - 1);
+
+            }
+            else
+            {
+                cart.Count -= 1;
+                cart.Price = SD.GetPriceBasedOnQuatity(cart.Count, cart.Product.Price, cart.Product.Price50, cart.Product.Price100);
+
+                _context.SaveChanges();
+            }
+
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public IActionResult Remove(int cartId)
+        {
+            var cart = _context.ShoppingCarts.Include(s => s.Product).FirstOrDefault(c => c.Id == cartId);
+
+
+            var cnt = _context.ShoppingCarts.Where(sC => sC.ApplicationUserId == cart.ApplicationUserId).ToList().Count();
+            _context.ShoppingCarts.Remove(cart);
+            _context.SaveChanges();
+
+            HttpContext.Session.SetInt32("Session_ShoppingCart", cnt - 1);
+
+
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }
