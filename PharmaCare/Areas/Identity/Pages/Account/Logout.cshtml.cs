@@ -31,7 +31,7 @@ namespace PharmaCare.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
 
-            HttpContext.Session.SetInt32("Session_ShoppingCart", 0);
+            HttpContext.Session.Remove("Session_ShoppingCart");
 
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
