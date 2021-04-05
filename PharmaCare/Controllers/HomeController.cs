@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PharmaCare.Data;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace PharmaCare.Controllers
@@ -35,7 +37,7 @@ namespace PharmaCare.Controllers
             {
                 return NotFound();
             }
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
 
             if(product == null)
             {
@@ -45,7 +47,62 @@ namespace PharmaCare.Controllers
             product.Star += 1;
             await _context.SaveChangesAsync();
 
-            return View(product);
+            var cart = new ShoppingCart()
+            {
+                Product = product,
+                ProductId = product.Id
+            };
+
+            return View(cart);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult ProductDetails(ShoppingCart shoppingCart)
+        {
+            shoppingCart.Id = 0;
+
+            if (ModelState.IsValid)
+            {
+                //then we will add to cart
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                shoppingCart.ApplicationUserId = claim.Value;
+
+                var shoppingCartFromDb = _context.ShoppingCarts.Include(s => s.Product).FirstOrDefault(s => s.ApplicationUserId == shoppingCart.ApplicationUserId && s.ProductId == shoppingCart.ProductId);
+
+                if (shoppingCartFromDb == null)
+                {
+                    //no records exists in database for that product for that user, so we create new data 
+                    _context.ShoppingCarts.Add(shoppingCart);
+                }
+                else
+                {
+                    shoppingCartFromDb.Count += shoppingCart.Count;
+
+                    
+                }
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+
+            }
+            else
+            {
+                var product = _context.Products.Include(p => p.Category).FirstOrDefault(p => p.Id == shoppingCart.ProductId);
+
+                var cart = new ShoppingCart()
+                {
+                    Product = product,
+                    ProductId = product.Id
+                };
+
+                return View(cart);
+            }
+
 
         }
 
