@@ -72,7 +72,7 @@ namespace PharmaCare.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize()]
         public IActionResult ProductDetails(ShoppingCart shoppingCart)
         {
             shoppingCart.Id = 0;

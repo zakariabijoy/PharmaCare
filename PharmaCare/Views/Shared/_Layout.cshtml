@@ -52,28 +52,32 @@
                         <nav class="site-navigation text-right text-md-center" role="navigation">
                             <ul class="site-menu js-clone-nav d-none d-lg-block">
                                 <li class="active"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                                <li><a href="#">Store</a></li>
-                                <li class="has-children">
-                                    <a href="#">Dropdown</a>
-                                    <ul class="dropdown">
-                                        <li><a asp-area="Admin" asp-controller="Categories" asp-action="Index">Categories</a></li>
-                                        <li><a asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a></li>
-                                        <li class="has-children">
-                                            <a href="#">Vitamins</a>
-                                            <ul class="dropdown">
-                                                <li><a href="#">Supplements</a></li>
-                                                <li><a href="#">Vitamins</a></li>
-                                                <li><a href="#">Diet &amp; Nutrition</a></li>
-                                                <li><a href="#">Tea &amp; Coffee</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Diet &amp; Nutrition</a></li>
-                                        <li><a href="#">Tea &amp; Coffee</a></li>
 
-                                    </ul>
-                                </li>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Contact</a></li>
+                                    <li><a asp-area="Admin" asp-controller="Categories" asp-action="Index">Categories</a></li>
+                                    <li><a asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a></li>
+                                    <li><a asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a></li>
+
+
+                                @*<li class="has-children">
+            <a href="#"></a>
+            <ul class="dropdown">
+
+                <li class="has-children">
+                    <a href="#">Vitamins</a>
+                    <ul class="dropdown">
+                        <li><a href="#">Supplements</a></li>
+                        <li><a href="#">Vitamins</a></li>
+                        <li><a href="#">Diet &amp; Nutrition</a></li>
+                        <li><a href="#">Tea &amp; Coffee</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Diet &amp; Nutrition</a></li>
+                <li><a href="#">Tea &amp; Coffee</a></li>
+
+            </ul>
+        </li>*@
+                                @*<li><a asp-area="" asp-controller="Home" asp-action="Index">About</a></li>
+        <li><a href="#">Contact</a></li>*@
                                 <partial name="_LoginPartial" />
                             </ul>
                         </nav>
@@ -82,7 +86,7 @@
                     {
                     <div class="icons">
 
-                        <a asp-controller="Cart" asp-action="Index" class="icons-btn d-inline-block bag">
+                        <a asp-area="" asp-controller="Cart" asp-action="Index" class="icons-btn d-inline-block bag">
                             <span class="icon-shopping-bag"></span>
                             @{
                                        var count = HttpContextAccessor.HttpContext.Session.GetInt32("Session_ShoppingCart");

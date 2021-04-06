@@ -6,8 +6,21 @@
 
 @if (Model.ShoppingCarts.Count() > 0)
 {
+    
     <div class="site-section">
+
         <div class="container">
+            <div class="card-header bg-dark text-light ml-0 row ">
+                <div class="col-6">
+                    <i class="fa fa-shopping-cart"></i> &nbsp;
+                    Shopping Cart
+                </div>
+                <div class="col-6 text-right">
+                    <a class="btn btn-outline-info btn-sm" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
             <div class="row mb-5">
                 <form class="col-md-12" method="post">
                     <div class="site-blocks-table">
@@ -27,7 +40,7 @@
                                 {
                                     <tr>
                                         <td class="product-thumbnail">
-                                            <img src="@shoppingCart.Product.ImageUrl" alt="Image"  width="200px" height="100px"class="img-fluid">
+                                            <img src="@shoppingCart.Product.ImageUrl" alt="Image" width="200px" height="100px" class="img-fluid">
                                         </td>
                                         <td class="product-name">
                                             <h2 class="h5 text-black">@shoppingCart.Product.Title</h2>
@@ -35,31 +48,31 @@
                                         <td>$@shoppingCart.Price <span class="text-muted btn btn-outline-primary">x @shoppingCart.Count</span></td>
                                         <td>
                                             <div class="input-group mb-3" style="max-width: 120px;">
-                                                
+
 
                                                 <div class="input-group-prepend">
-                                                    <a class="btn btn-outline-primary " asp-action="Minus" asp-route-cartId ="@shoppingCart.Id" >&minus;</a>
+                                                    <a class="btn btn-outline-primary " asp-action="Minus" asp-route-cartId="@shoppingCart.Id">&minus;</a>
                                                 </div>
-                                           
+
 
                                                 <div class="input-group-append">
-                                                    <a class="btn btn-outline-primary " asp-action="Plus" asp-route-cartId ="@shoppingCart.Id" >&plus;</a>
+                                                    <a class="btn btn-outline-primary " asp-action="Plus" asp-route-cartId="@shoppingCart.Id">&plus;</a>
                                                 </div>
                                             </div>
 
                                         </td>
                                         <td>@(shoppingCart.Price * shoppingCart.Count)</td>
-                                        <td><a asp-action="Remove" asp-route-cartId ="@shoppingCart.Id" class="btn btn-primary height-auto btn-sm">X</a></td>
+                                        <td><a asp-action="Remove" asp-route-cartId="@shoppingCart.Id" class="btn btn-primary height-auto btn-sm">X</a></td>
                                     </tr>
                                 }
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </form>
             </div>
 
             <div class="row">
-               
+
                 <div class="col-md-6 offset-md-4 pl-5">
                     <div class="row justify-content-end">
                         <div class="col-md-7">
@@ -68,7 +81,7 @@
                                     <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-5">
                                 <div class="col-md-6">
                                     <span class="text-black">Total</span>
