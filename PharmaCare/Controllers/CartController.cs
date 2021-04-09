@@ -111,5 +111,34 @@ namespace PharmaCare.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+        public IActionResult Summary()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            ShoppingCartVm = new ShoppingCartVM()
+            {
+                OrderHeader = new OrderHeader(),
+                ShoppingCarts = _context.ShoppingCarts.Include(s => s.Product).Where(c => c.ApplicationUserId == claim.Value).ToList()
+            };
+
+            ShoppingCartVm.OrderHeader.ApplicationUser =
+                _context.Users
+                .FirstOrDefault(u => u.Id == claim.Value);
+
+            foreach (var list in ShoppingCartVm.ShoppingCarts)
+            {
+                list.Price = SD.GetPriceBasedOnQuatity(list.Count, list.Product.Price,
+                    list.Product.Price50, list.Product.Price100);
+                ShoppingCartVm.OrderHeader.OrderTotal += (list.Price * list.Count);
+            }
+
+            ShoppingCartVm.OrderHeader.Name = ShoppingCartVm.OrderHeader.ApplicationUser.UserName;
+            ShoppingCartVm.OrderHeader.PhoneNumber = ShoppingCartVm.OrderHeader.ApplicationUser.PhoneNumber;
+          
+
+            return View(ShoppingCartVm);
+        }
     }
 }
