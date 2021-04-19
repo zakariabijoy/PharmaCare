@@ -201,5 +201,10 @@ namespace PharmaCare.Controllers
 
             return RedirectToAction("OrderConfirmation", "Cart", new { id = ShoppingCartVm.OrderHeader.Id });
         }
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(id);
+        }
     }
 }
