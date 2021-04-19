@@ -178,7 +178,6 @@ namespace PharmaCare.Controllers
             _context.OrderHeaders.Add(ShoppingCartVm.OrderHeader);
             _context.SaveChanges();
 
-            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
 
             foreach (var item in ShoppingCartVm.ShoppingCarts)
             {

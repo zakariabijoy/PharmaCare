@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PharmaCare.Data;
 using PharmaCare.Models;
+using PharmaCare.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace PharmaCare.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
+
+        public OrderDetailsVM OrderDetailsVm { get; private set; }
 
         public OrderController(ApplicationDbContext context)
         {
@@ -34,10 +37,18 @@ namespace PharmaCare.Areas.Admin.Controllers
             {
                 orderHeaderList = _context.OrderHeaders.Where(o => o.ApplicationUserId == claim.Value).Include(o => o.ApplicationUser).ToList();
             }
-            
 
-            
             return View(orderHeaderList);
+        }
+
+        public IActionResult Details(int id)
+        {
+            OrderDetailsVm = new OrderDetailsVM()
+            {
+                OrderHeader = _context.OrderHeaders.Include(o => o.ApplicationUser).FirstOrDefault(oh => oh.Id == id),
+                OrderDetailsList = _context.OrderDetails.Where(od => od.OrderId == id).Include(o => o.Product).ToList()
+            };
+            return View(OrderDetailsVm);
         }
     }
 }
