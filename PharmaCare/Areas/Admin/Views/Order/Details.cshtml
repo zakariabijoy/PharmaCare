@@ -219,7 +219,7 @@
                                             </div>
                                         </div>
 
-                                </li>
+                                    </li>
                                 }
                                 <li class="list-group-item bg-info">
                                     <div class="row container">
@@ -232,6 +232,25 @@
                                     </div>
                                 </li>
                             </ul>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <br />
+                                @if (Model.OrderHeader.OderStatus == SD.OrderStatusApproved)
+                                {
+                                    <a asp-action="StartProcessing" asp-route-id="@Model.OrderHeader.Id"
+                                       class="btn btn-primary form-control">Start Processing</a>
+                                }
+                                @if (Model.OrderHeader.OderStatus == SD.OrderStatusInProcess)
+                                {
+                                    <input type="submit" value="Ship Order" onclick="validateInput()"
+                                           class="btn btn-primary form-control"
+                                           formaction="/Admin/Order/ShipOrder" formmethod="post" />
+                                }
+                            }
+                            else
+                            {
+                                <label class="btn btn-primary form-control">@Model.OrderHeader.OderStatus</label>
+                            }
 
                         </div>
                     </div>
