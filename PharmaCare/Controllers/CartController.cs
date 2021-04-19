@@ -20,6 +20,8 @@ namespace PharmaCare.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
+
+        [BindProperty]
         public ShoppingCartVM ShoppingCartVm { get; set; }
 
         public CartController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
@@ -116,6 +118,10 @@ namespace PharmaCare.Controllers
 
         public IActionResult Summary()
         {
+            if(TempData["trxId"] != null)
+            {
+                ViewBag.TrxId = "trxid is missing";
+            }
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -150,6 +156,12 @@ namespace PharmaCare.Controllers
         [ActionName("Summary")]
         public IActionResult SummaryPost()
         {
+            if(ShoppingCartVm.OrderHeader.TransactionId == null)
+            {
+                TempData["trxId"] = "trxid is missing";
+                return RedirectToAction("Summary");
+            }
+
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 

@@ -7,6 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20210419163958_add validation for summary.cs" />
+    <Compile Remove="Data\Migrations\20210419163958_add validation for summary.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210419165044_test.cs" />
+    <Compile Remove="Data\Migrations\20210419165044_test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210419165409_add validation for summary.cs" />
+    <Compile Remove="Data\Migrations\20210419165409_add validation for summary.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210419165448_add validation for summary.cs" />
+    <Compile Remove="Data\Migrations\20210419165448_add validation for summary.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210419165815_added validation for summary.cs" />
+    <Compile Remove="Data\Migrations\20210419165815_added validation for summary.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.13" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.13" />

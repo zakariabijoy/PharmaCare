@@ -6,10 +6,18 @@
     <div class="backgroundWhiteBorder">
         <div class="container">
             <div class="card">
-                <div class="card-header bg-dark text-light ml-0 row container">
+                <div class="card-header  text-light ml-0 row container">
                     <div class="col-6">
                         <i class="fa fa-shopping-cart"></i> &nbsp;
                         Order Summary
+                        <br />
+                        @if (ViewBag.TrxId != null)
+                        {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.TrxId
+                    </div>
+                            
+                        }
                     </div>
                     <div class="col-6 text-right">
                         <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-info btn-sm">Back to Cart</a>
@@ -77,7 +85,7 @@
                                         <label>Bkash TrxId</label>
                                     </div>
                                     <div class="col-9">
-                                        <input type="text" class="form-control" asp-for="OrderHeader.TransactionId" />
+                                        <input  type="text" class="form-control" asp-for="OrderHeader.TransactionId" />
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +123,7 @@
                         </div>
                         <div class="col-12 col-md-4">
 
-                            <button type="submit" value="Place Order" class="btn btn-success form-control">Place Order</button>
+                            <button type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
                         </div>
                     </div>
                 </div>
