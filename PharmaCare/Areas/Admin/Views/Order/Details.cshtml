@@ -34,7 +34,7 @@
                             <div class="row my-1">
                                 <div class="col-3">Name</div>
                                 <div class="col-9">
-                                    @if ( User.IsInRole("Admin"))
+                                    @if (User.IsInRole("Admin"))
                                     {
                                         <input asp-for="OrderHeader.Name" type="text" class="form-control" />
                                     }
@@ -48,7 +48,7 @@
                             <div class="row my-1">
                                 <div class="col-3">Phone</div>
                                 <div class="col-9">
-                                    @if ( User.IsInRole("Admin"))
+                                    @if (User.IsInRole("Admin"))
                                     {
                                         <input asp-for="OrderHeader.PhoneNumber" type="text" class="form-control" />
                                     }
@@ -136,7 +136,7 @@
                                 <div class="col-9">
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        <input asp-for="OrderHeader.Carrier" type="text" class="form-control" />
+                                    <input asp-for="OrderHeader.Carrier" id="carrier" type="text" class="form-control" />
                                     }
                                     else
                                     {
@@ -147,9 +147,9 @@
                             <div class="row my-1">
                                 <div class="col-3">Tracking</div>
                                 <div class="col-9">
-                                    @if ( User.IsInRole("Admin"))
+                                    @if (User.IsInRole("Admin"))
                                     {
-                                        <input asp-for="OrderHeader.TrackingNumber" type="text" class="form-control" />
+                                        <input asp-for="OrderHeader.TrackingNumber" id="trackingNumber" type="text" class="form-control" />
                                     }
                                     else
                                     {
@@ -235,6 +235,12 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <br />
+                                @if (Model.OrderHeader.OderStatus == SD.OrderStatusPending)
+                                {
+                        <a asp-action="ApprovedOrder" asp-route-id="@Model.OrderHeader.Id"
+                           class="btn btn-primary form-control">Approve Order</a>
+                                }
+
                                 @if (Model.OrderHeader.OderStatus == SD.OrderStatusApproved)
                                 {
                                     <a asp-action="StartProcessing" asp-route-id="@Model.OrderHeader.Id"
@@ -242,14 +248,23 @@
                                 }
                                 @if (Model.OrderHeader.OderStatus == SD.OrderStatusInProcess)
                                 {
-                                    <input type="submit" value="Ship Order" onclick="validateInput()"
+                                    <input type="submit" value="Ship Order" onclick="return validateInput()"
                                            class="btn btn-primary form-control"
                                            formaction="/Admin/Order/ShipOrder" formmethod="post" />
                                 }
+
+
                             }
                             else
                             {
                                 <label class="btn btn-primary form-control">@Model.OrderHeader.OderStatus</label>
+                            }
+
+                            @if (Model.OrderHeader.OderStatus != SD.OrderStatusRefunded && Model.OrderHeader.OderStatus != SD.OrderStatusCancelled && Model.OrderHeader.OderStatus != SD.OrderStatusPending && (User.IsInRole("Admin")))
+                            {
+                                <div class="pt-2">
+                                    <a asp-action="CancelOrder" asp-route-id="@Model.OrderHeader.Id" class="btn btn-danger form-control">Cancel Order</a>
+                                </div>
                             }
 
                         </div>
@@ -259,3 +274,34 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+{
+    <script>
+        function validateInput() {
+            var tracking = document.getElementById("trackingNumber").value;
+            var carrier = document.getElementById("carrier").value;
+            if (tracking.toString() == '') {
+                alert("Error, please enter tracking number", "error");
+                return false;
+            } else {
+                if (carrier.toString() == '') {
+                    alert("Error, please enter carrier number", "error");
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        $(document).ready(function () {
+            var shippingDate = document.getElementById("shippingDate");
+            if (shippingDate.value == '1/1/0001') {
+                shippingDate.value = '';
+            }
+            var paymentDate = document.getElementById("paymentDate");
+            if (paymentDate.value == '1/1/0001') {
+                paymentDate.value = '';
+            }
+        });
+    </script>
+}

@@ -18,12 +18,14 @@ namespace PharmaCare.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+
         public OrderDetailsVM OrderDetailsVm { get; private set; }
 
         public OrderController(ApplicationDbContext context)
         {
             _context = context;
         }
+        [Authorize]
         public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -42,7 +44,7 @@ namespace PharmaCare.Areas.Admin.Controllers
 
             return View(orderHeaderList);
         }
-
+        [Authorize]
         public IActionResult Details(int id)
         {
             OrderDetailsVm = new OrderDetailsVM()
@@ -51,6 +53,15 @@ namespace PharmaCare.Areas.Admin.Controllers
                 OrderDetailsList = _context.OrderDetails.Where(od => od.OrderId == id).Include(o => o.Product).ToList()
             };
             return View(OrderDetailsVm);
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult ApprovedOrder(int id)
+        {
+            OrderHeader orderHeader = _context.OrderHeaders.FirstOrDefault(o => o.Id == id);
+            orderHeader.OderStatus = SD.OrderStatusApproved;
+            orderHeader.PaymentStatus = SD.PaymentStatusApproved;
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Admin")]
@@ -65,9 +76,9 @@ namespace PharmaCare.Areas.Admin.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult ShipOrder(int id)
+        public IActionResult ShipOrder(OrderDetailsVM OrderDetailsVm)
         {
-            OrderHeader orderHeader = _context.OrderHeaders.FirstOrDefault(o => o.Id == id);
+            OrderHeader orderHeader = _context.OrderHeaders.FirstOrDefault(o => o.Id == OrderDetailsVm.OrderHeader.Id);
             orderHeader.TrackingNumber = OrderDetailsVm.OrderHeader.TrackingNumber;
             orderHeader.Carrier = OrderDetailsVm.OrderHeader.Carrier;
             orderHeader.OderStatus = SD.OrderStatusShipped;

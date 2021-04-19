@@ -33,10 +33,19 @@
                 <td>@item.OderStatus</td>
                 <td>@item.OrderTotal</td>
                 <td>@item.TransactionId</td>
-
+                @if (User.IsInRole("Admin"))
+                {
                     <td>
                         <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@item.Id">Edit</a>
                     </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </td>
+                }
+
 
             </tr>
             }

@@ -174,6 +174,7 @@ namespace PharmaCare.Controllers
             ShoppingCartVm.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
             ShoppingCartVm.OrderHeader.ApplicationUserId = claim.Value;
             ShoppingCartVm.OrderHeader.OrderDate = DateTime.Now;
+            ShoppingCartVm.OrderHeader.PaymentDate = DateTime.Now;
 
             _context.OrderHeaders.Add(ShoppingCartVm.OrderHeader);
             _context.SaveChanges();
