@@ -182,6 +182,8 @@ namespace PharmaCare.Controllers
 
             foreach (var item in ShoppingCartVm.ShoppingCarts)
             {
+                item.Price = SD.GetPriceBasedOnQuatity(item.Count, item.Product.Price, item.Product.Price50,
+                                                                                              item.Product.Price100);
                 OrderDetails orderDetails = new OrderDetails()
                 {
                     ProductId = item.ProductId,
