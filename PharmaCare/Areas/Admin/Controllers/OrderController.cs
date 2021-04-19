@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PharmaCare.Data;
 using PharmaCare.Models;
 using PharmaCare.Models.ViewModels;
+using PharmaCare.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,5 +52,54 @@ namespace PharmaCare.Areas.Admin.Controllers
             };
             return View(OrderDetailsVm);
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult StartProcessing(int id)
+        {
+            OrderHeader orderHeader = _context.OrderHeaders.FirstOrDefault(o => o.Id == id);
+            orderHeader.OderStatus = SD.OrderStatusInProcess;
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ShipOrder(int id)
+        {
+            OrderHeader orderHeader = _context.OrderHeaders.FirstOrDefault(o => o.Id == id);
+            orderHeader.TrackingNumber = OrderDetailsVm.OrderHeader.TrackingNumber;
+            orderHeader.Carrier = OrderDetailsVm.OrderHeader.Carrier;
+            orderHeader.OderStatus = SD.OrderStatusShipped;
+            orderHeader.ShippingDate = DateTime.Now;
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult CancelOrder(int id)
+        {
+            OrderHeader orderHeader = _context.OrderHeaders.FirstOrDefault(o => o.Id == id);
+            if (orderHeader.PaymentStatus == SD.PaymentStatusApproved)
+            {
+                
+
+                orderHeader.OderStatus = SD.OrderStatusRefunded;
+                orderHeader.PaymentStatus = SD.OrderStatusRefunded;
+            }
+            else
+            {
+                orderHeader.OderStatus = SD.OrderStatusCancelled;
+                orderHeader.PaymentStatus = SD.OrderStatusCancelled;
+            }
+
+
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
     }
 }
