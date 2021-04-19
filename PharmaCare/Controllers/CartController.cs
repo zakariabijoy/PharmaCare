@@ -142,5 +142,52 @@ namespace PharmaCare.Controllers
 
             return View(ShoppingCartVm);
         }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Summary")]
+        public IActionResult SummaryPost()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            ShoppingCartVm.OrderHeader.ApplicationUser =
+                _context.Users.FirstOrDefault(c => c.Id == claim.Value);
+
+            ShoppingCartVm.ShoppingCarts = _context.ShoppingCarts.Where(s => s.ApplicationUserId == claim.Value).Include(s => s.Product).ToList();
+
+            ShoppingCartVm.OrderHeader.OderStatus = SD.OrderStatusPending;
+            ShoppingCartVm.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+            ShoppingCartVm.OrderHeader.ApplicationUserId = claim.Value;
+            ShoppingCartVm.OrderHeader.OrderDate = DateTime.Now;
+
+            _context.OrderHeaders.Add(ShoppingCartVm.OrderHeader);
+            _context.SaveChanges();
+
+            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+
+            foreach (var item in ShoppingCartVm.ShoppingCarts)
+            {
+                OrderDetails orderDetails = new OrderDetails()
+                {
+                    ProductId = item.ProductId,
+                    OrderId = ShoppingCartVm.OrderHeader.Id,
+                    Count = item.Count,
+                    Price = item.Price
+                };
+
+                ShoppingCartVm.OrderHeader.OrderTotal += orderDetails.Count * orderDetails.Price;
+                _context.OrderDetails.Add(orderDetails);
+
+                _context.SaveChanges();
+            }
+
+            _context.ShoppingCarts.RemoveRange(ShoppingCartVm.ShoppingCarts);
+            HttpContext.Session.SetInt32("Session_ShoppingCart", 0);
+
+            return RedirectToAction("OrderConfirmation", "Cart", new { id = ShoppingCartVm.OrderHeader.Id });
+        }
     }
 }
